@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:whatsapp/components/attachBtnItem.dart';
 import 'package:whatsapp/models/ChatModel.dart';
+import 'package:whatsapp/screens/SelectContactPage.dart';
 
 class IndividualChatPage extends StatefulWidget {
   final ChatModel chatModel;
@@ -170,7 +172,15 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              showModalBottomSheet(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return bottomsheet();
+                                                  });
+                                            },
                                             icon: Icon(Icons.attach_file)),
                                         IconButton(
                                             onPressed: () {},
@@ -250,6 +260,90 @@ class _IndividualChatPageState extends State<IndividualChatPage> {
                 tabIndicatorAnimDuration: kTabScrollDuration,
                 categoryIcons: const CategoryIcons(),
                 buttonMode: ButtonMode.MATERIAL)),
+      ),
+    );
+  }
+
+  Widget bottomsheet() {
+    return Container(
+      height: 290,
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        margin: EdgeInsets.all(18),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AttacthBtnItem(
+                    iconData: Icons.insert_drive_file,
+                    label: "Document",
+                    onTap: () {},
+                    color: Colors.indigo,
+                  ),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  AttacthBtnItem(
+                    iconData: Icons.camera_alt,
+                    label: "Camera",
+                    onTap: () {},
+                    color: Colors.pink,
+                  ),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  AttacthBtnItem(
+                    iconData: Icons.insert_photo,
+                    label: "Gallery",
+                    onTap: () {},
+                    color: Colors.purple,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AttacthBtnItem(
+                    iconData: Icons.headset,
+                    label: "Audio",
+                    onTap: () {},
+                    color: Colors.orange,
+                  ),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  AttacthBtnItem(
+                    iconData: Icons.location_pin,
+                    label: "Location",
+                    onTap: () {},
+                    color: Colors.teal,
+                  ),
+                  SizedBox(
+                    width: 40,
+                  ),
+                  AttacthBtnItem(
+                    iconData: Icons.person,
+                    label: "Contact",
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SelectConatactPage(),
+                          ));
+                    },
+                    color: Colors.blue,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
