@@ -7,13 +7,15 @@ List<ChatModel> chats = [
     icon: Elusive.user,
     name: "Rayhan 13ads",
     isGroup: false,
-    time: "10:03"
+    time: "10:03",
+    status: "Desginer"
   ),
   ChatModel(
     currentMessage: "Hi rayhan",
     icon: Elusive.group,
     name: "Dev Team",
     isGroup: true,
-    time: "02:03"
+    time: "02:03",
+    status: "Developer "
   )
 ];
