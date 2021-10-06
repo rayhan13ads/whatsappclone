@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/demy/demy_data.dart';
+import 'package:whatsapp/models/ChatModel.dart';
 import 'package:whatsapp/screens/CameraPage.dart';
 import 'package:whatsapp/screens/ChatPage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final ChatModel user;
+  const HomePage({Key? key, required this.user}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -79,7 +82,10 @@ class _HomePageState extends State<HomePage>
           controller: _controller,
           children: [
             CamraPage(),
-            ChatPage(),
+            ChatPage(
+              user: widget.user,
+              chats: chats.where((element) => element.id != widget.user.id).toList(),
+            ),
             Text("Camera"),
             Text("Camera"),
           ],

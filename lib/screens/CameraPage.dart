@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:whatsapp/screens/CamerViewPage.dart';
+import 'package:whatsapp/screens/CamerarViewPage.dart';
+import 'package:whatsapp/screens/VideoView.dart';
 
 List<CameraDescription>? cameras;
 
@@ -18,7 +21,10 @@ class _CamraPageState extends State<CamraPage> {
   late CameraController _cameraController;
 
   late Future<void> cameraValue;
-
+  bool isRecoard = false;
+  bool isFlash = false;
+  bool isCameraFont = true;
+  double transform = pi;
   @override
   void initState() {
     super.initState();
@@ -69,27 +75,78 @@ class _CamraPageState extends State<CamraPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.flash_off,
-                            size: 28,
-                            color: Colors.white,
-                          )),
-                      InkWell(
-                          onTap: () {
-                            takePhoto(context);
+                          onPressed: () {
+                            setState(() {
+                              isFlash = !isFlash;
+                            });
+                            isFlash
+                                ? _cameraController
+                                    .setFlashMode(FlashMode.torch)
+                                : _cameraController.setFlashMode(FlashMode.off);
                           },
-                          child: Icon(
-                            Icons.panorama_fish_eye,
-                            size: 70,
-                            color: Colors.white,
-                          )),
-                      IconButton(
-                          onPressed: () {},
                           icon: Icon(
-                            Icons.flip_camera_ios,
+                            isFlash ? Icons.flash_on : Icons.flash_off,
                             size: 28,
                             color: Colors.white,
+                          )),
+                      GestureDetector(
+                          onLongPress: () {
+                            setState(() {
+                              isRecoard = true;
+                            });
+                            takeVideo(context);
+                          },
+                          onLongPressUp: () async {
+                            await _cameraController
+                                .stopVideoRecording()
+                                .then((value) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VideoViewPage(
+                                      path: value.path,
+                                    ),
+                                  ));
+                            });
+                            setState(() {
+                              isRecoard = false;
+                            });
+                          },
+                          onTap: () {
+                            if (!isRecoard) {
+                              takePhoto(context);
+                            }
+                          },
+                          child: isRecoard
+                              ? Icon(
+                                  Icons.radio_button_on,
+                                  color: Colors.red,
+                                  size: 80,
+                                )
+                              : Icon(
+                                  Icons.panorama_fish_eye,
+                                  size: 70,
+                                  color: Colors.white,
+                                )),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isCameraFont = !isCameraFont;
+                              transform = transform + pi;
+                            });
+
+                            int cameraPostion = isCameraFont ? 0 : 1;
+                            _cameraController = CameraController(
+                                cameras![cameraPostion], ResolutionPreset.high);
+                            cameraValue = _cameraController.initialize();
+                          },
+                          icon: Transform.rotate(
+                            angle: transform,
+                            child: Icon(
+                              Icons.flip_camera_ios,
+                              size: 28,
+                              color: Colors.white,
+                            ),
                           )),
                     ],
                   ),
@@ -120,11 +177,18 @@ class _CamraPageState extends State<CamraPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CamreaViewPage(
+            builder: (context) => CameraViewPage(
               path: value.path,
             ),
           ));
     });
+  }
+
+  void takeVideo(BuildContext context) async {
+    // final path =
+    //     join((await getTemporaryDirectory()).path, "${DateTime.now()}.png");
+
+    await _cameraController.startVideoRecording();
   }
 
   @override

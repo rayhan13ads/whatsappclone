@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whatsapp/screens/CameraPage.dart';
+import 'package:whatsapp/screens/Demy_LoginPage.dart';
 import 'package:whatsapp/screens/HomePage.dart';
 
 void main() async{
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primaryColor: Color(0xFF075E54), accentColor: Color(0xFF128C7E)),
-      home: HomePage(),
+      home: DemyLoginPage() //HomePage(),
     );
   }
 }
