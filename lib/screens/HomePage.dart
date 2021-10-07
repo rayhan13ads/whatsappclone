@@ -3,6 +3,7 @@ import 'package:whatsapp/demy/demy_data.dart';
 import 'package:whatsapp/models/ChatModel.dart';
 import 'package:whatsapp/screens/CameraPage.dart';
 import 'package:whatsapp/screens/ChatPage.dart';
+import 'package:whatsapp/screens/StatusPage.dart';
 
 class HomePage extends StatefulWidget {
   final ChatModel user;
@@ -84,9 +85,11 @@ class _HomePageState extends State<HomePage>
             CamraPage(),
             ChatPage(
               user: widget.user,
-              chats: chats.where((element) => element.id != widget.user.id).toList(),
+              chats: chats
+                  .where((element) => element.id != widget.user.id)
+                  .toList(),
             ),
-            Text("Camera"),
+            StatusPage(),
             Text("Camera"),
           ],
         ));
